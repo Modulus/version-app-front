@@ -1,0 +1,1 @@
+Check out this package for interval: https://package.elm-lang.org/packages/elm-lang/core/4.0.0/Time
