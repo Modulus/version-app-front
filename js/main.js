@@ -4293,17 +4293,6 @@ var author$project$VersionApp$Model = F2(
 	function (version, meta) {
 		return {meta: meta, version: version};
 	});
-var author$project$VersionApp$init = A2(author$project$VersionApp$Model, '0.0', 'Nothing');
-var author$project$VersionApp$update = F2(
-	function (msg, model) {
-		return _Utils_update(
-			model,
-			{version: 'jaadda'});
-	});
-var author$project$VersionApp$Update = {$: 'Update'};
-var elm$core$Basics$identity = function (x) {
-	return x;
-};
 var elm$core$Basics$False = {$: 'False'};
 var elm$core$Basics$True = {$: 'True'};
 var elm$core$Result$isOk = function (result) {
@@ -4313,11 +4302,6 @@ var elm$core$Result$isOk = function (result) {
 		return false;
 	}
 };
-var elm$core$Array$branchFactor = 32;
-var elm$core$Array$Array_elm_builtin = F4(
-	function (a, b, c, d) {
-		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
-	});
 var elm$core$Basics$EQ = {$: 'EQ'};
 var elm$core$Basics$GT = {$: 'GT'};
 var elm$core$Basics$LT = {$: 'LT'};
@@ -4398,6 +4382,11 @@ var elm$core$Array$foldr = F3(
 var elm$core$Array$toList = function (array) {
 	return A3(elm$core$Array$foldr, elm$core$List$cons, _List_Nil, array);
 };
+var elm$core$Array$branchFactor = 32;
+var elm$core$Array$Array_elm_builtin = F4(
+	function (a, b, c, d) {
+		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
+	});
 var elm$core$Basics$ceiling = _Basics_ceiling;
 var elm$core$Basics$fdiv = _Basics_fdiv;
 var elm$core$Basics$logBase = F2(
@@ -4779,6 +4768,30 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 			}
 		}
 	});
+var elm$core$Platform$Cmd$batch = _Platform_batch;
+var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
+var author$project$VersionApp$init = function (_n0) {
+	return _Utils_Tuple2(
+		A2(author$project$VersionApp$Model, '0.0', 'Nothing'),
+		elm$core$Platform$Cmd$none);
+};
+var elm$core$Platform$Sub$batch = _Platform_batch;
+var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
+var author$project$VersionApp$subscriptions = function (model) {
+	return elm$core$Platform$Sub$none;
+};
+var author$project$VersionApp$update = F2(
+	function (msg, model) {
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{version: 'jaadda'}),
+			elm$core$Platform$Cmd$none);
+	});
+var author$project$VersionApp$Update = {$: 'Update'};
+var elm$core$Basics$identity = function (x) {
+	return x;
+};
 var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
@@ -4840,10 +4853,6 @@ var author$project$VersionApp$view = function (model) {
 					]))
 			]));
 };
-var elm$core$Platform$Cmd$batch = _Platform_batch;
-var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
-var elm$core$Platform$Sub$batch = _Platform_batch;
-var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var elm$browser$Browser$External = function (a) {
 	return {$: 'External', a: a};
 };
@@ -5139,25 +5148,8 @@ var elm$url$Url$fromString = function (str) {
 		elm$url$Url$Https,
 		A2(elm$core$String$dropLeft, 8, str)) : elm$core$Maybe$Nothing);
 };
-var elm$browser$Browser$sandbox = function (impl) {
-	return _Browser_element(
-		{
-			init: function (_n0) {
-				return _Utils_Tuple2(impl.init, elm$core$Platform$Cmd$none);
-			},
-			subscriptions: function (_n1) {
-				return elm$core$Platform$Sub$none;
-			},
-			update: F2(
-				function (msg, model) {
-					return _Utils_Tuple2(
-						A2(impl.update, msg, model),
-						elm$core$Platform$Cmd$none);
-				}),
-			view: impl.view
-		});
-};
-var author$project$VersionApp$main = elm$browser$Browser$sandbox(
-	{init: author$project$VersionApp$init, update: author$project$VersionApp$update, view: author$project$VersionApp$view});
+var elm$browser$Browser$element = _Browser_element;
+var author$project$VersionApp$main = elm$browser$Browser$element(
+	{init: author$project$VersionApp$init, subscriptions: author$project$VersionApp$subscriptions, update: author$project$VersionApp$update, view: author$project$VersionApp$view});
 _Platform_export({'VersionApp':{'init':author$project$VersionApp$main(
 	elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));

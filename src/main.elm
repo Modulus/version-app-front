@@ -30,8 +30,8 @@ update msg model =
 url : String
 url = "http://localhost:5000"
 
-init :  (Model, Cmd Msg) 
-init =
+init :  () -> (Model, Cmd Msg) 
+init _ =
     (Model "0.0" "Nothing", Cmd.none)
 
   
