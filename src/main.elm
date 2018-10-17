@@ -7,6 +7,7 @@ import Html.Events exposing (onClick)
 import Http exposing (get)
 import Time
 import Task
+import Json.Decode exposing (Decoder, field, int, string)
 
 main =
   Browser.element
@@ -15,6 +16,20 @@ main =
     , subscriptions = subscriptions
     , view = view
     }
+
+
+    -- MODEL
+
+url : String
+url = "http://localhost:5000"
+
+versionDecoder : Decoder String
+versionDecoder = 
+    field "version" string
+
+-- getVersionString :   Cmd Msg
+-- getVersionString =
+--     Http.send Update (Http.get url versionDecoder)
 
 type alias Model = 
         { 
@@ -39,10 +54,7 @@ update msg model =
         Reset -> 
             ({ model | zone = Time.utc, time =  (Time.millisToPosix 0) }, Cmd.none)
 
--- MODEL
 
-url : String
-url = "http://localhost:5000"
 
 init :  () -> (Model, Cmd Msg) 
 init _ =
