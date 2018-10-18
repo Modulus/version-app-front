@@ -51,11 +51,15 @@ update msg model =
         Update -> 
            ({ model | version = "Getting new version" }, getVersionString)
         Tick newTime ->
-            ({model | time = newTime }, Cmd.none)
+            ({model | time = newTime, version = "Getting new version"}, getVersionString)
         Reset -> 
             ({ model | zone = Time.utc, time =  (Time.millisToPosix 0) }, Cmd.none)
         NewResult result ->
-            ({ model | version = "New version received how to parse it?" }, Cmd.none)
+            case result of
+                Ok versionString -> 
+                    ({model | version = versionString}, Cmd.none)
+                Err errorMessage ->
+                    ({model | version = "Failed to get version!" }, Cmd.none)
 
 
 
@@ -70,7 +74,7 @@ view model =
     div  [][
             div [][ text (String.fromInt ( Time.toSecond model.zone model.time)) ] 
             ,div [][ text model.version ] 
-            ,button  [onClick Update ] [text "Update"]
+            ,button  [onClick Update ] [text "Force get"]
             ,button [onClick Reset] [text "Reset"]
     ]
 
