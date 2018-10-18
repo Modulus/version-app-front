@@ -27,9 +27,9 @@ versionDecoder : Decoder String
 versionDecoder = 
     field "version" string
 
--- getVersionString :   Cmd Msg
--- getVersionString =
---     Http.send Update (Http.get url versionDecoder)
+getVersionString :  Cmd Msg
+getVersionString =
+    Http.send NewResult (Http.get url versionDecoder) 
 
 type alias Model = 
         { 
@@ -42,17 +42,20 @@ type alias Model =
 type Msg 
     = Update 
     | Reset
+    | NewResult (Result Http.Error String)
     | Tick Time.Posix
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
         Update -> 
-           ({ model | version = "jaadda" }, Cmd.none)
+           ({ model | version = "Getting new version" }, getVersionString)
         Tick newTime ->
             ({model | time = newTime }, Cmd.none)
         Reset -> 
             ({ model | zone = Time.utc, time =  (Time.millisToPosix 0) }, Cmd.none)
+        NewResult result ->
+            ({ model | version = "New version received how to parse it?" }, Cmd.none)
 
 
 
