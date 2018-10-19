@@ -1,8 +1,8 @@
-module VersionApp exposing (..)
+module Main exposing (..)
 
 import Time exposing (now, every)
 import Browser
-import Html exposing (Html, button, div, text)
+import Html exposing (Html, button, div, text, h1)
 import Html.Events exposing (onClick)
 import Http exposing (get)
 import Time
@@ -71,10 +71,11 @@ init _ =
   
 view : Model -> Html Msg
 view model = 
-
     div  [][
+            h1 [][text "Version"]
+
             -- div [ ][ text (String.fromInt ( Time.toSecond model.zone model.time)) ] 
-            div [][ text model.version ] 
+            ,div [][ text model.version ] 
             ,button  [onClick Update ] [text "Force"]
             ,button [onClick Reset] [text "Reset"]
             ,div [][ text model.text ] 
