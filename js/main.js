@@ -4517,9 +4517,9 @@ function _Browser_load(url)
 		}
 	}));
 }
-var author$project$Main$Model = F5(
-	function (version, text, meta, zone, time) {
-		return {meta: meta, text: text, time: time, version: version, zone: zone};
+var author$project$Main$Model = F6(
+	function (version, text, meta, timestamp, zone, time) {
+		return {meta: meta, text: text, time: time, timestamp: timestamp, version: version, zone: zone};
 	});
 var elm$core$Basics$False = {$: 'False'};
 var elm$core$Basics$True = {$: 'True'};
@@ -5012,11 +5012,12 @@ var elm$time$Time$Zone = F2(
 var elm$time$Time$utc = A2(elm$time$Time$Zone, 0, _List_Nil);
 var author$project$Main$init = function (_n0) {
 	return _Utils_Tuple2(
-		A5(
+		A6(
 			author$project$Main$Model,
 			'Version: N/A',
 			'Initalizing',
 			'Nothing',
+			'',
 			elm$time$Time$utc,
 			elm$time$Time$millisToPosix(0)),
 		elm$core$Platform$Cmd$none);
@@ -5532,9 +5533,18 @@ var author$project$Main$NewResult = function (a) {
 	return {$: 'NewResult', a: a};
 };
 var author$project$Main$url = 'http://localhost:5000';
+var author$project$Main$VersionJson = F2(
+	function (version, timestamp) {
+		return {timestamp: timestamp, version: version};
+	});
 var elm$json$Json$Decode$field = _Json_decodeField;
+var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$string = _Json_decodeString;
-var author$project$Main$versionDecoder = A2(elm$json$Json$Decode$field, 'version', elm$json$Json$Decode$string);
+var author$project$Main$versionTypeDecoder = A3(
+	elm$json$Json$Decode$map2,
+	author$project$Main$VersionJson,
+	A2(elm$json$Json$Decode$field, 'version', elm$json$Json$Decode$string),
+	A2(elm$json$Json$Decode$field, 'timestamp', elm$json$Json$Decode$string));
 var elm$http$Http$Internal$EmptyBody = {$: 'EmptyBody'};
 var elm$http$Http$emptyBody = elm$http$Http$Internal$EmptyBody;
 var elm$core$Dict$getMin = function (dict) {
@@ -6061,10 +6071,10 @@ var elm$http$Http$send = F2(
 			resultToMessage,
 			elm$http$Http$toTask(request_));
 	});
-var author$project$Main$getVersionString = A2(
+var author$project$Main$getVersionObject = A2(
 	elm$http$Http$send,
 	author$project$Main$NewResult,
-	A2(elm$http$Http$get, author$project$Main$url, author$project$Main$versionDecoder));
+	A2(elm$http$Http$get, author$project$Main$url, author$project$Main$versionTypeDecoder));
 var author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -6073,14 +6083,14 @@ var author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{text: 'Updating'}),
-					author$project$Main$getVersionString);
+					author$project$Main$getVersionObject);
 			case 'Tick':
 				var newTime = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{text: 'Updating', time: newTime}),
-					author$project$Main$getVersionString);
+					author$project$Main$getVersionObject);
 			case 'Reset':
 				return _Utils_Tuple2(
 					_Utils_update(
@@ -6093,11 +6103,11 @@ var author$project$Main$update = F2(
 			default:
 				var result = msg.a;
 				if (result.$ === 'Ok') {
-					var versionString = result.a;
+					var versionObject = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{text: 'Waiting', version: versionString}),
+							{text: 'Waiting', timestamp: versionObject.timestamp, version: versionObject.version}),
 						elm$core$Platform$Cmd$none);
 				} else {
 					var errorMessage = result.a;
@@ -6112,7 +6122,6 @@ var author$project$Main$update = F2(
 var author$project$Main$Reset = {$: 'Reset'};
 var author$project$Main$Update = {$: 'Update'};
 var elm$json$Json$Decode$map = _Json_map1;
-var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
 var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	switch (handler.$) {
@@ -6131,6 +6140,40 @@ var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var elm$core$Tuple$second = function (_n0) {
+	var y = _n0.b;
+	return y;
+};
+var elm$json$Json$Encode$string = _Json_wrap;
+var elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			elm$json$Json$Encode$string(string));
+	});
+var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
+var elm$html$Html$Attributes$classList = function (classes) {
+	return elm$html$Html$Attributes$class(
+		A2(
+			elm$core$String$join,
+			' ',
+			A2(
+				elm$core$List$map,
+				elm$core$Tuple$first,
+				A2(elm$core$List$filter, elm$core$Tuple$second, classes))));
+};
 var elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -6151,7 +6194,14 @@ var elm$html$Html$Events$onClick = function (msg) {
 var author$project$Main$view = function (model) {
 	return A2(
 		elm$html$Html$div,
-		_List_Nil,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$classList(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('container', true)
+					]))
+			]),
 		_List_fromArray(
 			[
 				A2(
@@ -6159,14 +6209,37 @@ var author$project$Main$view = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						elm$html$Html$text('Version')
+						elm$html$Html$text('Version Application')
 					])),
 				A2(
 				elm$html$Html$div,
-				_List_Nil,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('alert', true),
+								_Utils_Tuple2('alert-primary', true)
+							]))
+					]),
 				_List_fromArray(
 					[
 						elm$html$Html$text(model.version)
+					])),
+				A2(
+				elm$html$Html$div,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('alert', true),
+								_Utils_Tuple2('alert-primary', true)
+							]))
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text(model.timestamp)
 					])),
 				A2(
 				elm$html$Html$button,
