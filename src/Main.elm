@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Time exposing (now, every)
 import Browser
-import Html exposing (Html, button, div, text, h1)
+import Html exposing (Html, button, div, text, h1, table, thead, tbody, tr, td, th)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (..)
 import Http exposing (get)
@@ -96,14 +96,28 @@ view : Model -> Html Msg
 view model = 
     div  [classList[("container", True)]][
             h1 [][text "Version Application"]
-
-                    
-            -- div [ ][ text (String.fromInt ( Time.toSecond model.zone model.time)) ] 
-            ,div [ classList [("alert", True), ("alert-primary", True)]][ text model.version ] 
-            ,div [ classList [("alert", True), ("alert-primary", True)]][ text model.timestamp ] 
-            ,button  [onClick Update ] [text "Force"]
-            ,button [onClick Reset] [text "Reset"]
-            ,div [][ text model.text ] 
+    ,div [ class "row" ]
+        [ table [ class "table table-striped"]
+            [ thead []
+                [ tr []
+                    [ th [] [ text "Current version" ]                        
+                    , th [] [ text "Updated @" ]
+                    ]
+                ]
+            , tbody []
+                [ tr []
+                    [ td [] [ text model.version ]
+                    , td [] [ text model.timestamp ]
+                    ]
+               -- , tr []
+               --     [ td [ colspan 2, style "text-align"  "center" ] [ text model.text ]
+               --    
+               --     ]
+                ]
+            ]
+        ]
+        ,button  [onClick Update, type_ "button", classList[("btn", True), ("btn-danger", True)] ] [text "Force Update"]
+        ,button [onClick Reset, type_ "button", classList[("btn", True), ("btn-primary", True)]] [text "Reset timer"]
     ]
 
 

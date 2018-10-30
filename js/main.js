@@ -6138,8 +6138,23 @@ var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
+var elm$html$Html$table = _VirtualDom_node('table');
+var elm$html$Html$tbody = _VirtualDom_node('tbody');
+var elm$html$Html$td = _VirtualDom_node('td');
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var elm$html$Html$th = _VirtualDom_node('th');
+var elm$html$Html$thead = _VirtualDom_node('thead');
+var elm$html$Html$tr = _VirtualDom_node('tr');
+var elm$json$Json$Encode$string = _Json_wrap;
+var elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			elm$json$Json$Encode$string(string));
+	});
+var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
 var elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -6155,15 +6170,6 @@ var elm$core$Tuple$second = function (_n0) {
 	var y = _n0.b;
 	return y;
 };
-var elm$json$Json$Encode$string = _Json_wrap;
-var elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			elm$json$Json$Encode$string(string));
-	});
-var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
 var elm$html$Html$Attributes$classList = function (classes) {
 	return elm$html$Html$Attributes$class(
 		A2(
@@ -6174,6 +6180,7 @@ var elm$html$Html$Attributes$classList = function (classes) {
 				elm$core$Tuple$first,
 				A2(elm$core$List$filter, elm$core$Tuple$second, classes))));
 };
+var elm$html$Html$Attributes$type_ = elm$html$Html$Attributes$stringProperty('type');
 var elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -6215,58 +6222,105 @@ var author$project$Main$view = function (model) {
 				elm$html$Html$div,
 				_List_fromArray(
 					[
-						elm$html$Html$Attributes$classList(
-						_List_fromArray(
-							[
-								_Utils_Tuple2('alert', true),
-								_Utils_Tuple2('alert-primary', true)
-							]))
+						elm$html$Html$Attributes$class('row')
 					]),
 				_List_fromArray(
 					[
-						elm$html$Html$text(model.version)
-					])),
-				A2(
-				elm$html$Html$div,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$classList(
+						A2(
+						elm$html$Html$table,
 						_List_fromArray(
 							[
-								_Utils_Tuple2('alert', true),
-								_Utils_Tuple2('alert-primary', true)
+								elm$html$Html$Attributes$class('table table-striped')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$thead,
+								_List_Nil,
+								_List_fromArray(
+									[
+										A2(
+										elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												elm$html$Html$th,
+												_List_Nil,
+												_List_fromArray(
+													[
+														elm$html$Html$text('Current version')
+													])),
+												A2(
+												elm$html$Html$th,
+												_List_Nil,
+												_List_fromArray(
+													[
+														elm$html$Html$text('Updated @')
+													]))
+											]))
+									])),
+								A2(
+								elm$html$Html$tbody,
+								_List_Nil,
+								_List_fromArray(
+									[
+										A2(
+										elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														elm$html$Html$text(model.version)
+													])),
+												A2(
+												elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														elm$html$Html$text(model.timestamp)
+													]))
+											]))
+									]))
 							]))
-					]),
-				_List_fromArray(
-					[
-						elm$html$Html$text(model.timestamp)
 					])),
 				A2(
 				elm$html$Html$button,
 				_List_fromArray(
 					[
-						elm$html$Html$Events$onClick(author$project$Main$Update)
+						elm$html$Html$Events$onClick(author$project$Main$Update),
+						elm$html$Html$Attributes$type_('button'),
+						elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('btn', true),
+								_Utils_Tuple2('btn-danger', true)
+							]))
 					]),
 				_List_fromArray(
 					[
-						elm$html$Html$text('Force')
+						elm$html$Html$text('Force Update')
 					])),
 				A2(
 				elm$html$Html$button,
 				_List_fromArray(
 					[
-						elm$html$Html$Events$onClick(author$project$Main$Reset)
+						elm$html$Html$Events$onClick(author$project$Main$Reset),
+						elm$html$Html$Attributes$type_('button'),
+						elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('btn', true),
+								_Utils_Tuple2('btn-primary', true)
+							]))
 					]),
 				_List_fromArray(
 					[
-						elm$html$Html$text('Reset')
-					])),
-				A2(
-				elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						elm$html$Html$text(model.text)
+						elm$html$Html$text('Reset timer')
 					]))
 			]));
 };
