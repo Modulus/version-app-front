@@ -22,7 +22,7 @@ main =
     -- MODEL
 
 url : String
-url = "http://localhost:5000"
+url = "http://version.snadder.io/api" --"http://localhost:5000"
 
 
 versionTypeDecoder : Decoder VersionJson 
